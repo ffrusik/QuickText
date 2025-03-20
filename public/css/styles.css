@@ -1,0 +1,13 @@
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color:rgb(232, 232, 223);
+    font-size: 25px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#logo {
+    font-size: 150%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: italic;
+}
