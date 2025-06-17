@@ -25,11 +25,13 @@
     <div>
         Your drafts automatically saved in your browser earlier:
         <div id="drafts">
-            <ul>
-                <% notes.forEach(function(note) {%>
-                    <li><%= note %></li>
-                <% }) %>
-            </ul>
+            <% if (notes.length > 0) { %>
+                <ul>
+                    <% notes.forEach(function(note) {%>
+                        <li><%= note %></li>
+                    <% }) %>
+                </ul>
+            <% } %>
         </div>
     </div>
 </body>
