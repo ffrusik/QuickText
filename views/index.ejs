@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
     <title>Quick Text</title>
 </head>
 <body>
     <header>
         <div id="logo">QuickText.com</div>
-        <div id="new-btn"><button>+ New</button></div>
+        <div id="btns-container">
+            <button id="new-btn">+ New</button>
+            <button id="delete-btn">Delete</button>
+        </div>
     </header>
+
+    <form action="/api/create_note" method="post">
+        <div id="temp-link-container">
+            <button type="submit">Create a Temporary Link for the current text</button><br>
+            <textarea id="text-note" name="note" placeholder="Your text..."></textarea>
+        </div>
+    </form>
+
+    <div>
+        Your drafts automatically saved in your browser earlier:
+        <div id="drafts">
+            <ul>
+                <% notes.forEach(function(note) {%>
+                    <li><%= note %></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>

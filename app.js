@@ -1,10 +1,19 @@
 const express = require('express')
 const app = express()
-const PORT = 3000
+const path = require('path')
+const cookieParser = require('cookie-parser')
+const { credentials } = require('./conf')
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser(credentials.secretCookie))
+
+const PORT = process.env.PORT || 3000
 
 app.set('view engine', 'ejs')
 
 const indexRouter = require('./routes/index') // can create more routes => import them into index => require only index router
+const { cookie } = require('express-validator')
 
 app.use(express.static(__dirname + '/public'))
 app.use('/', indexRouter)
