@@ -23,9 +23,6 @@ router
 
         res.render('index', { notes }) // user authentication? (cookies + database) 
     })
-    .post((req, res) => {
-        res.send('Creating the document')
-    })
 
 router
     .route('/notes/:id')
@@ -75,6 +72,8 @@ router
         //res.send(`Note: ${req.body.note}`);
     })
 
+
+    
 // router.param('id', (req, res, next, id) => {
 //     console.log(id)
 //     next()

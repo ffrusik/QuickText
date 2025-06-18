@@ -6,6 +6,15 @@ body {
     margin-right: 5%;
 }
 
+form {
+    height: 100%;
+}
+
+button {
+    background-color: rgb(225, 225, 213);
+    border: 1px solid gray;
+}
+
 header {
     display: flex;
     align-items: stretch;
@@ -80,7 +89,22 @@ header {
     padding: 5px 10px 5px 10px;
 }
 
-button {
-    background-color: rgb(225, 225, 213);
-    border: 1px solid gray;
+.savedDraft {
+    color: rgb(91, 93, 99);
+}
+
+#delete-notes-btn {
+    height: 100%;
+    padding: 10px 20px 10px 20px;
+    font-size: 24px;
+    margin: 10px 0px 10px 0px;
+    border: 1px dashed gray;
+}
+
+#delete-notes-btn:hover {
+    background-color: rgb(237, 237, 222);
+}
+
+#delete-notes-btn:active {
+    background-color: rgb(223, 223, 212);
 }
