@@ -10,7 +10,7 @@
     <header>
         <div id="logo"><a href="/">QuickText.com</a></div>
         <div id="btns-container">
-            <form id="new-form" action="/api/create_note" method="post">
+            <form id="new-form" action="/api/create_note" method="post" onsubmit="return addNote()">
                 <input type="hidden" name="noteIndex" id="new-note-index" />
                 <input type="hidden" name="note" id="new-note-hidden" />
                 <button id="new-btn" type="submit">+ New</button>
@@ -31,13 +31,13 @@
     </form>
 
     <div>
-        Your text will be saved in your browser storage as draft automatically. <br>
+        Your text will be saved in your browser storage as draft. <br>
 
         <form id="delete-form" action="/api/delete_notes?_method=DELETE" method="post">
             <button id="delete-notes-btn" type="submit">Delete all drafts</button>
         </form>
 
-        Your drafts automatically saved in your browser earlier:
+        Your drafts saved in your browser earlier:
         <div id="drafts">
             <% if (notes.length > 0) { %>
                 <ul>

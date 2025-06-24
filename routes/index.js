@@ -39,14 +39,17 @@ router
 
         const {note, noteIndex} = req.body
 
-        if (noteIndex !== undefined && noteIndex !== '' && !isNaN(noteIndex)) {
+        if (noteIndex !== undefined && noteIndex !== '' && !isNaN(noteIndex) && note !== '') {
             const idx = parseInt(noteIndex)
             if (idx >= 0 && idx < notes.length) {
                 notes[idx] = note
             }
         }
-        else {
+        else if (note !== '') {
             notes.push(note)
+        }
+        else {
+            console.log('Empty draft')
         }
 
         res.cookie('note', JSON.stringify(notes), {

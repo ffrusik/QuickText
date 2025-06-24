@@ -30,6 +30,12 @@ function deleteNote() {
     return true
 }
 
+function addNote() {
+    if (document.getElementById('text-note').value == '') {
+        alert('Cannot create an empty draft')
+    }
+}
+
 document.getElementById('new-form').addEventListener('submit', function(e) {
     const note = document.getElementById('text-note').value
     const noteHidden = document.getElementById('new-note-hidden')
