@@ -3,10 +3,12 @@ const app = express()
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const { credentials } = require('./conf')
+const methodOverride = require('method-override')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(credentials.secretCookie))
+app.use(methodOverride('_method'))
 
 const PORT = process.env.PORT || 3000
 

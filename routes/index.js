@@ -25,28 +25,6 @@ router
     })
 
 router
-    .route('/notes/:id')
-    .get((req, res) => {
-        console.log(req.params);
-        const parsedId = parseInt(req.params.id);
-        console.log(parsedId);
-        if (isNaN(parsedId)) 
-            return res.status(400).send({msg: 'Bad request. Invalid ID.'});
-
-        const findNote = mockNotes.find((note) => note.id === parsedId);
-        if (!findNote) return res.sendStatus(404);
-        return res.send(findNote);
-
-        // res.render('index', { documentId: req.params.id, username: 'Ruslan'}) // id of document (cookies + database)
-    })
-    .put((req, res) => {
-        res.send(`Updating the document with ID ${req.params.id}`) // may change the content AND the name of the document
-    })
-    .delete((req, res) => {
-        res.send(`Deleting the document with ID ${req.params.id}`)
-    })
-
-router
     .route('/api/create_note')
     .post((req, res) => {
         let notes = []
@@ -59,7 +37,17 @@ router
             }
         }
 
-        notes.push(req.body.note);
+        const {note, noteIndex} = req.body
+
+        if (noteIndex !== undefined && noteIndex !== '' && !isNaN(noteIndex)) {
+            const idx = parseInt(noteIndex)
+            if (idx >= 0 && idx < notes.length) {
+                notes[idx] = note
+            }
+        }
+        else {
+            notes.push(note)
+        }
 
         res.cookie('note', JSON.stringify(notes), {
             httpOnly: true,
@@ -67,13 +55,48 @@ router
         })
 
         res.redirect('/')
-
-        //res.cookie( "monster_cookie", "Yummy Yummy" ).send( "Monster Cookie!" )
-        //res.send(`Note: ${req.body.note}`);
     })
 
+router
+    .route('/api/delete_notes')
+    .delete((req, res) => {
+        if (req.cookies.note) {
+            try {
+                res.clearCookie('note')
+            } catch (err) {
+                console.log('Failed to delete cookie: ', err)
+            }
+        }
 
+        res.redirect('/')
+    })
     
+router
+    .route('/api/delete_note')
+    .delete((req, res) => {
+        let notes = []
+
+        if (req.cookies.note) {
+            try {
+                notes = JSON.parse(req.cookies.note)
+            } catch (err) {
+                console.log('Failed to parse cookie: ', err)
+            }
+        }
+
+        const indexToDelete = parseInt(req.body.noteIndex)
+        if (!isNaN(indexToDelete) && indexToDelete >= 0 && indexToDelete < notes.length) {
+            notes.splice(indexToDelete, 1)
+        }
+
+        res.cookie('note', JSON.stringify(notes), {
+            httpOnly: true,
+            maxAge: 90 * 24 * 60 * 60 * 1000
+        })
+
+        res.redirect('/')
+    })
+
 // router.param('id', (req, res, next, id) => {
 //     console.log(id)
 //     next()

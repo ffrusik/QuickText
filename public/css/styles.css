@@ -108,3 +108,8 @@ header {
 #delete-notes-btn:active {
     background-color: rgb(223, 223, 212);
 }
+
+#logo a {
+    text-decoration: none;
+    color: black;
+}

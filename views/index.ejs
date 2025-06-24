@@ -8,23 +8,24 @@
 </head>
 <body>
     <header>
-        <div id="logo">QuickText.com</div>
+        <div id="logo"><a href="/">QuickText.com</a></div>
         <div id="btns-container">
             <form id="new-form" action="/api/create_note" method="post">
+                <input type="hidden" name="noteIndex" id="new-note-index" />
                 <input type="hidden" name="note" id="new-note-hidden" />
                 <button id="new-btn" type="submit">+ New</button>
             </form>
 
-            <form id="delete-form" action="/api/delete_note" method="post" onsubmit="return deleteNote();">
-                <input type="hidden" name="_method" value="DELETE" />
-                <button id="delete-btn">Delete</button>
+            <form id="delete-form" action="/api/delete_note?_method=DELETE" method="post" onsubmit="return deleteNote();">
+                <input type="hidden" name="noteIndex" id="noteIndex" />
+                <button id="delete-btn" type="submit">Delete</button>
             </form>
         </div>
     </header>
 
     <form action="/api/create_note" method="post">
         <div id="temp-link-container">
-            <button type="submit">Create a Temporary Link for the current text</button><br>
+            <button type="submit">Create a new draft</button><br>
             <textarea id="text-note" name="note" placeholder="Your text..."></textarea>
         </div>
     </form>
@@ -32,17 +33,16 @@
     <div>
         Your text will be saved in your browser storage as draft automatically. <br>
 
-        <form id="delete-form" action="/api/delete_notes" method="post" onsubmit="return deleteNote();">
-            <input type="hidden" name="_method" value="DELETE" />
-            <button id="delete-notes-btn">Delete all drafts</button>
+        <form id="delete-form" action="/api/delete_notes?_method=DELETE" method="post">
+            <button id="delete-notes-btn" type="submit">Delete all drafts</button>
         </form>
 
         Your drafts automatically saved in your browser earlier:
         <div id="drafts">
             <% if (notes.length > 0) { %>
                 <ul>
-                    <% notes.forEach(function(note) {%>
-                        <li><a class="savedDraft" href="#"><%= note %></a></li>
+                    <% notes.forEach(function(note, index) {%>
+                        <li><a class="savedDraft" href="#" data-index="<%= index %>"><%= note %></a></li>
                     <% }) %>
                 </ul>
             <% } %>
