@@ -11,7 +11,7 @@ document.querySelectorAll('.savedDraft').forEach((el) => {
         this.classList.add('selected-note')
 
         selectedNoteIndex = this.dataset.index
-        const noteText = this.textContent
+        const noteText = this.dataset.fullnote
 
         document.getElementById('new-btn').textContent = "Update"
 

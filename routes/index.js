@@ -2,12 +2,6 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 
-const mockNotes = [
-    { id: 1, noteText: '123123132'},
-    { id: 2, noteText: 'qweqweqwe'},
-    { id: 3, noteText: 'asdasdasd'}
-]
-
 router
     .route('/')
     .get((req, res) => {
@@ -21,7 +15,7 @@ router
             }
         }
 
-        res.render('index', { notes }) // user authentication? (cookies + database) 
+        res.render('index', { notes })
     })
 
 router

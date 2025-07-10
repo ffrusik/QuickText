@@ -4,6 +4,9 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const { credentials } = require('./conf')
 const methodOverride = require('method-override')
+const client = require('./db')
+
+client.connect().then(() => console.log('Connected'))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
