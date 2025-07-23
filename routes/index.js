@@ -94,6 +94,14 @@ router
         res.redirect('/')
     })
 
+router
+    .route('/account')
+    .get((req, res) => {
+        let acc = []
+        
+        res.render('account', { acc })
+    })
+
 // router.param('id', (req, res, next, id) => {
 //     console.log(id)
 //     next()

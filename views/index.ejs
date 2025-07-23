@@ -11,6 +11,7 @@
 <body>
     <header>
         <div id="logo"><a href="/">QuickText.com</a></div>
+        <div id="account"><a href="/account">My account</a></div>
         <div id="btns-container">
             <form id="new-form" action="/api/create_note" method="post" onsubmit="return addNote()">
                 <input type="hidden" name="noteIndex" id="new-note-index" />
@@ -48,7 +49,7 @@
         }
         %>
 
-        Your drafts saved in your browser earlier:
+        Your drafts saved in your browser (cookies) earlier:
         <div id="drafts">
             <% if (notes.length > 0) { %>
                 <ul>

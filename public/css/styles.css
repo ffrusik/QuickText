@@ -19,19 +19,53 @@ header {
     display: flex;
     align-items: stretch;
     height: 45px;
+    justify-content: space-between;
 }
 
 #logo {
     display: flex;
+    flex: 1;
     align-items: center;
     font-size: 36px;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: left;
+}
+
+#logo a {
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+#account {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    font-size: 32px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
+}
+
+#account a, #account-acc a {
+    text-decoration: underline;
+    color: black;
+    text-align: center;
+}
+
+#account-acc {
+    float: right;
+    font-size: 32px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    text-align: center;
 }
 
 #btns-container {
-    margin-left: auto;
     display: flex;
+    flex: 1;
+    margin-left: auto;
     align-items: center;
+    text-align: right;
+    justify-content: flex-end;
 }
 
 #new-btn {
@@ -109,7 +143,3 @@ header {
     background-color: rgb(223, 223, 212);
 }
 
-#logo a {
-    text-decoration: none;
-    color: black;
-}

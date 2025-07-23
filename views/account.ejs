@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>My account</title>
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="/">QuickText.com</a></div>
+        <div id="account-acc"><a href="/account">My account</a></div>
+    </header>
+
+    <div>
+        <p>Username: <%= userInfo[0] %></p>
+        <p>Notes saved in the database:</p>
+        <div id="drafts">
+            <% if (notes.length > 0) { %>
+                <ul>
+                    <% notes.forEach(function(note, index) { %>
+                        <li><a class="savedDraft" href="#">
+                            <%= truncate(note, 100) %></a>
+                        </li>
+                    <% }) %> 
+                </ul>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>
