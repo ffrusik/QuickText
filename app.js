@@ -4,9 +4,6 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const { credentials } = require('./conf')
 const methodOverride = require('method-override')
-const client = require('./db')
-
-client.connect().then(() => console.log('Connected'))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -17,11 +14,12 @@ const PORT = process.env.PORT || 3000
 
 app.set('view engine', 'ejs')
 
-const indexRouter = require('./routes/index') // can create more routes => import them into index => require only index router
+const indexRouter = require('./routes/index')
+const apiRouter = require('./routes/api')
 const { cookie } = require('express-validator')
 
 app.use(express.static(__dirname + '/public'))
-app.use('/', indexRouter)
+app.use('/', indexRouter, apiRouter)
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}...`)

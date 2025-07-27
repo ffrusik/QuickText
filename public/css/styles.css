@@ -13,6 +13,17 @@ form {
 button {
     background-color: rgb(225, 225, 213);
     border: 1px solid gray;
+    height: 100%;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+
+button:hover {
+    background-color: rgb(237, 237, 222);
+}
+
+button:active {
+    background-color: rgb(223, 223, 212);
 }
 
 header {

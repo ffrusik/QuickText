@@ -13,19 +13,35 @@
     </header>
 
     <div>
-        <p>Username: <%= userInfo[0] %></p>
-        <p>Notes saved in the database:</p>
+        <p>Username: <%= acc[1] %></p>
+        <p>Notes saved in the database: (to access them go the home page)</p>
+
+        <%
+        function truncate(str, maxLength) {
+            if (str.length > maxLength) {
+                return str.substr(0, maxLength - 1) + '...'
+            }
+            return str
+        }
+        %>
+
         <div id="drafts">
-            <% if (notes.length > 0) { %>
+            <% if (acc[2].length > 0) { %>
                 <ul>
-                    <% notes.forEach(function(note, index) { %>
-                        <li><a class="savedDraft" href="#">
-                            <%= truncate(note, 100) %></a>
+                    <% acc[2].forEach(function(note, index) { %>
+                        <li>
+                            <%= truncate(note, 100) %>
                         </li>
                     <% }) %> 
                 </ul>
             <% } %>
         </div>
+
+        <form action="/api/unlogin" method="post">
+            <div>
+                <button type="submit">Unlogin</button><br>
+            </div>
+        </form>
     </div>
 </body>
 </html>

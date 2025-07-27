@@ -1,6 +1,7 @@
 const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
+const pool = require('../db')
 
 router
     .route('/')
@@ -19,92 +20,42 @@ router
     })
 
 router
-    .route('/api/create_note')
-    .post((req, res) => {
-        let notes = []
-
-        if (req.cookies.note) {
-            try {
-                notes = JSON.parse(req.cookies.note)
-            } catch (err) {
-                console.error('Failed to parse cookie: ', err)
-            }
-        }
-
-        const {note, noteIndex} = req.body
-
-        if (noteIndex !== undefined && noteIndex !== '' && !isNaN(noteIndex) && note !== '') {
-            const idx = parseInt(noteIndex)
-            if (idx >= 0 && idx < notes.length) {
-                notes[idx] = note
-            }
-        }
-        else if (note !== '') {
-            notes.push(note)
-        }
-        else {
-            console.log('Empty draft')
-        }
-
-        res.cookie('note', JSON.stringify(notes), {
-            httpOnly: true,
-            maxAge: 30 * 24 * 60 * 60 * 1000
-        })
-
-        res.redirect('/')
-    })
-
-router
-    .route('/api/delete_notes')
-    .delete((req, res) => {
-        if (req.cookies.note) {
-            try {
-                res.clearCookie('note')
-            } catch (err) {
-                console.log('Failed to delete cookie: ', err)
-            }
-        }
-
-        res.redirect('/')
-    })
-    
-router
-    .route('/api/delete_note')
-    .delete((req, res) => {
-        let notes = []
-
-        if (req.cookies.note) {
-            try {
-                notes = JSON.parse(req.cookies.note)
-            } catch (err) {
-                console.log('Failed to parse cookie: ', err)
-            }
-        }
-
-        const indexToDelete = parseInt(req.body.noteIndex)
-        if (!isNaN(indexToDelete) && indexToDelete >= 0 && indexToDelete < notes.length) {
-            notes.splice(indexToDelete, 1)
-        }
-
-        res.cookie('note', JSON.stringify(notes), {
-            httpOnly: true,
-            maxAge: 90 * 24 * 60 * 60 * 1000
-        })
-
-        res.redirect('/')
-    })
-
-router
     .route('/account')
-    .get((req, res) => {
-        let acc = []
+    .get(async (req, res) => {
         
-        res.render('account', { acc })
+        userId = 1
+
+        try {
+            const result = await pool.query(
+                `   SELECT u.username, n.content
+                FROM users u 
+                JOIN notes n ON u.id = n.id
+                WHERE u.id = $1`, 
+                [userId]
+            )
+            
+            const username = result.rows[0]?.username || 'Unknown'
+            const notes = result.rows.map(row => row.content)
+
+            const acc = [userId, username, notes]
+            res.render('account', {acc})
+        }
+        catch (err) {
+            console.log(err)
+            res.status(500).send('Database error')
+        }
     })
 
-// router.param('id', (req, res, next, id) => {
-//     console.log(id)
-//     next()
-// })
+router
+    .route('/register')
+    .get((req, res) => {
+        res.render('register')
+    })
+
+router
+    .route('/login')
+    .get((req, res) => {
+        res.render('login')
+    })
 
 module.exports = router
