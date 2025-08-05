@@ -43,5 +43,14 @@
             </div>
         </form>
     </div>
+
+    <% if (!cookiesAccepted) { %>
+        <div id="cookie-banner" class="cookie-banner">
+            <p>This website uses cookies to ensure you get the best experience.</p>
+            <button id="cookie-accept">Got it!</button>
+        </div>
+    <% } %>
+
+    <script src="/js/cookiesAccept.js" type="text/javascript"></script>
 </body>
 </html>

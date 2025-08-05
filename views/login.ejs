@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <title>Login</title>
+</head>
+<body>
+    <header>
+        <div id="logo"><a href="/">QuickText.com</a></div>
+    </header>
+
+    <div>
+        <h1>Login</h1>
+        <form action="/api/login" method="post" id="login-form">
+            <div>
+                <label for="username">Username: </label><br>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div>
+                <label for="pass">Password: </label><br>
+                <input type="password" id="pass" name="password" minlength="8" required />
+            </div>
+            <div>
+                <label>Repeat password: </label><br>
+                <input type="password" id="repeatPass" name="repeatPassword" minlength="8" required />
+            </div>
+
+            <input type="submit" value="Sign in" />
+        </form>
+    </div>
+
+    <% if (!cookiesAccepted) { %>
+        <div id="cookie-banner" class="cookie-banner">
+            <p>This website uses cookies to ensure you get the best experience.</p>
+            <button id="cookie-accept">Got it!</button>
+        </div>
+    <% } %>
+
+    <script src="/js/cookiesAccept.js" type="text/javascript"></script>
+</body>
+</html>
