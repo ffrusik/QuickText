@@ -26,7 +26,7 @@
         %>
 
         <div id="drafts">
-            <% if (acc[2].length > 0) { %>
+            <% if (acc[2].length > 0 && acc[2].length != null) { %>
                 <ul>
                     <% acc[2].forEach(function(note, index) { %>
                         <li>
@@ -37,7 +37,7 @@
             <% } %>
         </div>
 
-        <form action="/api/unlogin" method="post">
+        <form action="/api/unlogin?_method=DELETE" method="post">
             <div>
                 <button type="submit">Unlogin</button><br>
             </div>

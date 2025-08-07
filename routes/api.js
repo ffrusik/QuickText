@@ -83,25 +83,33 @@ router
 router
     .route('/api/unlogin')
     .delete((req, res) => {
-        // Delete session
-
-        res.redirect('/')
+        req.session.destroy(err => {
+            if (err) {
+                return res.status(500).send("Couldn't log out")
+            }
+            res.redirect('/')
+        })
     })
 
 router
     .route('/api/login')
     .post(async (req, res) => {
-        const { username, password } = req.body
+        const { username, password, repeatPassword } = req.body
 
         try {
             const result = await pool.query(
-                `SELECT * FROM users
+                `SELECT id, username, password
+                FROM users u
                 WHERE username = $1`,
                 [username]
             )
 
             if (result.rows.length == 0) {
                 return res.status(401).send('User not found')
+            }
+
+            if (password != repeatPassword) {
+                return res.status(400).send('Passwords do not match')
             }
 
             const user = result.rows[0]
@@ -112,9 +120,12 @@ router
                 return res.status(401).send('Incorrect password')
             }
 
-            // Create session with id of the user to be able to use it in the /account to fetch notes
+            req.session.userId = user.id
+            req.session.username = user.username
 
-            res.redirect('/')
+            console.log('Logged in as: ', req.session)
+
+            res.redirect('/account')
         } catch(err) {
             console.error('Error loginning: ', err)
             res.status(500).send('Internal server error')
