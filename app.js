@@ -7,12 +7,18 @@ const cookieParser = require('cookie-parser')
 const { credentials } = require('./conf')
 const methodOverride = require('method-override')
 const session = require('express-session')
+const pgSession = require('connect-pg-simple')(session)
+const pool = require('./db')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(credentials.secretCookie))
 app.use(methodOverride('_method'))
 app.use(session({
+    store: new pgSession({
+        pool: pool,
+        tableName: 'session'
+    }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,

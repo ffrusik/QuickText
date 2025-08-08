@@ -42,9 +42,11 @@ router
                 )
                 
                 const username = result.rows[0]?.username || 'Unknown'
-                const notes = result.rows.map(row => row.content)
+                const notes = result.rows
+                    .map(row => row.content)
+                    .filter(content => content !== null)
 
-                const acc = [req.session.userId, username, []]
+                const acc = [req.session.userId, username, notes]
                 res.render('account', {acc, cookiesAccepted})
             }
             catch (err) {
