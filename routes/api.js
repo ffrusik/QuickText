@@ -3,36 +3,51 @@ const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const pool = require('../db')
 const bcrypt = require('bcrypt')
+const { v4: uuidv4 } = require('uuid')
 
 router
     .route('/api/create_note')
     .post((req, res) => {
         let notes = []
 
-        if (req.cookies.note) {
+        if (req.cookies.notes) {
             try {
-                notes = JSON.parse(req.cookies.note)
+                notes = JSON.parse(req.cookies.notes)
             } catch (err) {
                 console.error('Failed to parse cookie: ', err)
             }
         }
 
-        const { note, noteIndex } = req.body
+        const { note, noteId } = req.body
 
-        if (noteIndex !== undefined && noteIndex !== '' && !isNaN(noteIndex) && note !== '') {
-            const idx = parseInt(noteIndex)
-            if (idx >= 0 && idx < notes.length) {
-                notes[idx] = note
+        if (noteId !== undefined && noteId !== '' && note !== '') {
+            const noteToUpdate = notes.find(n => n.id === noteId)
+            if (noteToUpdate) {
+                noteToUpdate.text = note
+                noteToUpdate.updatedAt = new Date().toISOString()
+            }
+            else {
+                notes.push({
+                    id: uuidv4(),
+                    text: note,
+                    createdAt: new Date().toISOString(),
+                    updatedAt: new Date().toISOString()
+                });
             }
         }
         else if (note !== '') {
-            notes.push(note)
+            notes.push({
+                id: uuidv4(),
+                text: note,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            })
         }
         else {
             console.log('Empty draft')
         }
 
-        res.cookie('note', JSON.stringify(notes), {
+        res.cookie('notes', JSON.stringify(notes), {
             httpOnly: true,
             maxAge: 30 * 24 * 60 * 60 * 1000
         })
@@ -43,9 +58,9 @@ router
 router
     .route('/api/delete_notes')
     .delete((req, res) => {
-        if (req.cookies.note) {
+        if (req.cookies.notes) {
             try {
-                res.clearCookie('note')
+                res.clearCookie('notes')
             } catch (err) {
                 console.log('Failed to delete cookie: ', err)
             }
@@ -59,20 +74,20 @@ router
     .delete((req, res) => {
         let notes = []
 
-        if (req.cookies.note) {
+        if (req.cookies.notes) {
             try {
-                notes = JSON.parse(req.cookies.note)
+                notes = JSON.parse(req.cookies.notes)
             } catch (err) {
                 console.log('Failed to parse cookie: ', err)
             }
         }
 
-        const indexToDelete = parseInt(req.body.noteIndex)
-        if (!isNaN(indexToDelete) && indexToDelete >= 0 && indexToDelete < notes.length) {
-            notes.splice(indexToDelete, 1)
+        const idToDelete = req.body.noteId
+        if (idToDelete) {
+            notes = notes.filter(note => note.id !== idToDelete)
         }
 
-        res.cookie('note', JSON.stringify(notes), {
+        res.cookie('notes', JSON.stringify(notes), {
             httpOnly: true,
             maxAge: 90 * 24 * 60 * 60 * 1000
         })
@@ -171,4 +186,10 @@ router
         
     })
 
+router
+    .route('/api/save_to_db')
+    .post(async (req, res) => {
+        // Create a single button that will firstly delete all of the notes in the database, replacing them with the ones that 
+    })
+    
 module.exports = router

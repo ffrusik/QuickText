@@ -18,13 +18,13 @@
         <% } %>
         <div id="btns-container">
             <form id="new-form" action="/api/create_note" method="post" onsubmit="return addNote()">
-                <input type="hidden" name="noteIndex" id="new-note-index" />
+                <input type="hidden" name="noteId" id="new-note-id" />
                 <input type="hidden" name="note" id="new-note-hidden" />
                 <button id="new-btn" type="submit">+ New</button>
             </form>
 
-            <form id="delete-form" action="/api/delete_note?_method=DELETE" method="post" onsubmit="return deleteNote();">
-                <input type="hidden" name="noteIndex" id="noteIndex" />
+            <form id="delete-note-form" action="/api/delete_note?_method=DELETE" method="post" onsubmit="return deleteNote();">
+                <input type="hidden" name="noteId" id="noteId" />
                 <button id="delete-btn" type="submit">Delete</button>
             </form>
         </div>
@@ -40,7 +40,7 @@
     <div>
         Your text will be saved in your browser storage as draft. <br>
 
-        <form id="delete-form" action="/api/delete_notes?_method=DELETE" method="post">
+        <form id="delete-notes-form" action="/api/delete_notes?_method=DELETE" method="post">
             <button id="delete-notes-btn" type="submit">Delete all drafts</button>
         </form>
 
@@ -57,9 +57,9 @@
         <div id="drafts">
             <% if (notes.length > 0) { %>
                 <ul>
-                    <% notes.forEach(function(note, index) { %>
-                        <li><a class="savedDraft" href="#" data-index="<%= index %>" data-fullnote="<%= note.replace(/"/g, '&quot;') %>">
-                            <%= truncate(note, 100) %></a>
+                    <% notes.forEach(function(note) { %>
+                        <li><a class="savedDraft" href="#" data-id="<%= note.id %>" data-fullnote="<%= note.text.replace(/"/g, '&quot;') %>">
+                            <%= truncate(note.text, 100) %></a>
                         </li>
                     <% }) %> 
                 </ul>

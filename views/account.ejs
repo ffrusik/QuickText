@@ -13,8 +13,8 @@
     </header>
 
     <div>
-        <p>Username: <%= acc[1] %></p>
-        <p>Notes saved in the database: (to access them go the home page)</p>
+        <p>Username: <%= username %></p>
+        <p>Notes saved in the database:</p>
 
         <%
         function truncate(str, maxLength) {
@@ -26,11 +26,17 @@
         %>
 
         <div id="drafts">
-            <% if (acc[2].length > 0 && acc[2].length != null) { %>
+            <% if (notes && notes.length > 0) { %>
                 <ul>
-                    <% acc[2].forEach(function(note, index) { %>
+                    <% notes.forEach(function(note) { %>
                         <li>
-                            <%= truncate(note, 100) %>
+                            Created at: <%= note.created_at %>
+                        </li>
+                        <li>
+                            Updated at: <%= note.updated_at %>
+                        </li>
+                        <li>
+                            <%= truncate(note.content, 100) %>
                         </li>
                     <% }) %> 
                 </ul>

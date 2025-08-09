@@ -9,15 +9,15 @@ router
         let notes = [];
         const cookiesAccepted = req.headers.cookie?.includes('cookiesAccepted=true')
 
-        if (req.cookies.note) {
+        if (req.cookies.notes) {
             try {
-                notes = JSON.parse(req.cookies.note)
+                notes = JSON.parse(req.cookies.notes)
             } catch (err) {
                 console.log('Invalid cookie format')
             }
         }
 
-        userId = req.session.userId
+        const userId = req.session.userId
 
         res.render('index', { notes, cookiesAccepted, userId })
     })
@@ -34,23 +34,27 @@ router
         else {
             try {
                 const result = await pool.query(
-                    `SELECT u.username, n.content 
+                    `SELECT u.username, n.content, n.created_at, n.updated_at 
                     FROM users u
                     LEFT JOIN notes n ON u.id = n.user_id
-                    WHERE u.username = $1`,
-                    [req.session.username]
+                    WHERE u.id = $1`,
+                    [req.session.userId]
                 )
                 
                 const username = result.rows[0]?.username || 'Unknown'
                 const notes = result.rows
-                    .map(row => row.content)
-                    .filter(content => content !== null)
+                    .filter(row => row.content !== null)
+                    .map(row => ({
+                        id: row.id,
+                        content: row.content,
+                        createdAt: row.created_at,
+                        updatedAt: row.updatedAt
+                    }))
 
-                const acc = [req.session.userId, username, notes]
-                res.render('account', {acc, cookiesAccepted})
+                res.render('account', { userId: req.session.userId, username, notes, cookiesAccepted })
             }
             catch (err) {
-                console.log(err)
+                console.error(err)
                 res.status(500).send('Database error')
             }
         }

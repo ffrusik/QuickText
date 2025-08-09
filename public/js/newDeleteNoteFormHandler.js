@@ -1,4 +1,4 @@
-let selectedNoteIndex = null
+let selectedNoteId = null
 
 document.querySelectorAll('.savedDraft').forEach((el) => {
     el.addEventListener('click', function(e) {
@@ -10,19 +10,19 @@ document.querySelectorAll('.savedDraft').forEach((el) => {
 
         this.classList.add('selected-note')
 
-        selectedNoteIndex = this.dataset.index
+        selectedNoteId = this.dataset.id
         const noteText = this.dataset.fullnote
 
         document.getElementById('new-btn').textContent = "Update"
 
         document.getElementById("text-note").value = noteText
 
-        document.getElementById('noteIndex').value = selectedNoteIndex
+        document.getElementById('noteId').value = selectedNoteId
     })
 })
 
 function deleteNote() {
-    if (selectedNoteIndex === null) {
+    if (selectedNoteId === null) {
         alert('Please select a draft to delete')
         return false
     }
@@ -39,11 +39,11 @@ function addNote() {
 document.getElementById('new-form').addEventListener('submit', function(e) {
     const note = document.getElementById('text-note').value
     const noteHidden = document.getElementById('new-note-hidden')
-    const indexHidden = document.getElementById('new-note-index')
+    const idHidden = document.getElementById('new-note-id')
 
     noteHidden.value = note
 
-    if (selectedNoteIndex !== null) {
-        indexHidden.value = selectedNoteIndex
+    if (selectedNoteId !== null) {
+        idHidden.value = selectedNoteId
     }
 })
